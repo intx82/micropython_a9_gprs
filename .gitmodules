@@ -56,3 +56,6 @@
 [submodule "lib/micropython-lib"]
 	path = lib/micropython-lib
 	url = https://github.com/micropython/micropython-lib.git
+[submodule "ports/gprs_a9/GPRS_C_SDK"]
+	path = ports/gprs_a9/GPRS_C_SDK
+	url = https://github.com/Ai-Thinker-Open/GPRS_C_SDK
