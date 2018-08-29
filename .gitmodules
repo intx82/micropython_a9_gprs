@@ -68,3 +68,6 @@
 [submodule "lib/arduino-lib"]
 	path = lib/arduino-lib
 	url = https://github.com/arduino/arduino-lib-mpy.git
+[submodule "ports/gprs_a9/GPRS_C_SDK"]
+	path = ports/gprs_a9/GPRS_C_SDK
+	url = https://github.com/Ai-Thinker-Open/GPRS_C_SDK
