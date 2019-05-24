@@ -59,7 +59,7 @@ $(BUILD)/%.o: %.S
 vpath %.s . $(TOP) $(USER_C_MODULES)
 $(BUILD)/%.o: %.s
 	$(ECHO) "AS $<"
-	$(Q)$(AS) $(AFLAGS) -o $@ $<
+	$(Q)$(AS) $(ASFLAGS) -o $@ $<
 
 define compile_c
 $(ECHO) "CC $<"
