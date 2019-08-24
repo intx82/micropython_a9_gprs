@@ -60,5 +60,8 @@
 	path = lib/protobuf-c
 	url = https://github.com/protobuf-c/protobuf-c.git
 [submodule "ports/gprs_a9/GPRS_C_SDK"]
-	path = ports/gprs_a9/GPRS_C_SDK
-	url = https://github.com/Ai-Thinker-Open/GPRS_C_SDK
+	path = lib/GPRS_C_SDK
+	url = https://github.com/Ai-Thinker-Open/GPRS_C_SDK.git
+[submodule "lib/csdtk42-linux"]
+    path = lib/csdtk42-linux
+    url = https://github.com/pulkin/csdtk42-linux.git
