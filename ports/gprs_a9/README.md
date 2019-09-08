@@ -37,7 +37,7 @@ Use [pyserial](https://github.com/pyserial) or any other terminal.
 miniterm.py /dev/ttyUSB1 115200 --raw
 ```
 
-## Upload scipts
+## Upload scripts
 
 Use [ampy](https://github.com/pycampers/ampy).
 
@@ -45,7 +45,7 @@ Use [ampy](https://github.com/pycampers/ampy).
 ampy --port /dev/ttyUSB1 put frozentest.py 
 ```
 
-## Run scipts
+## Run scripts
 
 ```python
 >>> help()
