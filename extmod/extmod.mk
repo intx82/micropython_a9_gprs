@@ -208,10 +208,8 @@ ifeq ($(MICROPY_PY_SSL),1)
 CFLAGS_EXTMOD += -DMICROPY_PY_SSL=1
 ifeq ($(MICROPY_SSL_AXTLS),1)
 AXTLS_DIR = lib/axtls
-GIT_SUBMODULES += $(AXTLS_DIR)
-CFLAGS_EXTMOD += -DMICROPY_SSL_AXTLS=1 -I$(TOP)/lib/axtls/ssl -I$(TOP)/lib/axtls/crypto -I$(TOP)/extmod/axtls-include
-$(BUILD)/$(AXTLS_DIR)/%.o: CFLAGS += -Wno-all -Wno-unused-parameter -Wno-uninitialized -Wno-sign-compare -Wno-old-style-definition -Dmp_stream_errno=errno $(AXTLS_DEFS_EXTRA)
-SRC_THIRDPARTY_C += $(addprefix $(AXTLS_DIR)/,\
+$(BUILD)/$(AXTLS_DIR)/%.o: CFLAGS += -Wno-all -Wno-unused-parameter -Wno-uninitialized -Wno-sign-compare -Wno-old-style-definition $(AXTLS_DEFS_EXTRA)
+SRC_MOD += $(addprefix $(AXTLS_DIR)/,\
 	ssl/asn1.c \
 	ssl/loader.c \
 	ssl/tls1.c \
