@@ -148,7 +148,7 @@ STATIC mp_obj_t modi2c_receive(size_t n_args, const mp_obj_t *arg) {
         I2C_Error_t error = I2C_Receive(id, slave_address, (uint8_t*)vstr.buf, vstr.len, timeout);
         modi2c_private_throw_I2C_Error(error);
 
-        return mp_obj_new_str_from_vstr(&mp_type_bytes, &vstr);
+        return mp_obj_new_str_from_vstr(&vstr);
     }
 }
 
@@ -194,7 +194,7 @@ STATIC mp_obj_t modi2c_mem_receive(size_t n_args, const mp_obj_t *arg) {
         I2C_Error_t error = I2C_ReadMem(id, slave_address, memory_address, memory_size, (uint8_t*)vstr.buf, vstr.len, timeout);
         modi2c_private_throw_I2C_Error(error);
 
-        return mp_obj_new_str_from_vstr(&mp_type_bytes, &vstr);
+        return mp_obj_new_str_from_vstr(&vstr);
     }
 }
 

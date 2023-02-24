@@ -31,7 +31,7 @@
 
 #include "stdint.h"
 #include "stdbool.h"
-#include "lib/utils/interrupt_char.h"
+#include "shared/runtime/interrupt_char.h"
 #include "time.h"
 #include "py/obj.h"
 #include "uart.h"

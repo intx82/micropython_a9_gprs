@@ -944,6 +944,9 @@ void *mp_obj_malloc_with_finaliser_helper(size_t num_bytes, const mp_obj_type_t 
 // Type checks are split to a separate, constant result macro. This is so it doesn't hinder the compilers's
 // optimizations (other tricks like using ({ expr; exper; }) or (exp, expr, expr) in mp_obj_is_type() result
 // in missed optimizations)
+
+#define _assert(a) (assert(a))
+
 #define mp_type_assert_not_bool_int_str_nonetype(t) (                                     \
     MP_STATIC_ASSERT_NONCONSTEXPR((t) != &mp_type_bool), assert((t) != &mp_type_bool),         \
     MP_STATIC_ASSERT_NONCONSTEXPR((t) != &mp_type_int), assert((t) != &mp_type_int),           \

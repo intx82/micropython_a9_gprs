@@ -43,6 +43,7 @@ STATIC const char *_parity_name[] = {"None", "1", "0"};
 // ----
 // Init
 // ----
+STATIC mp_obj_t pyb_uart_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args);
 
 void modmachine_uart_init0(void) {
     UART_Close(UART2);
@@ -55,7 +56,7 @@ void modmachine_uart_init0(void) {
     mp_obj_t args[2];
     args[0] = MP_OBJ_NEW_SMALL_INT(0);
     args[1] = MP_OBJ_NEW_SMALL_INT(115200);
-    args[0] = pyb_uart_type.make_new(&pyb_uart_type, 2, 0, args);
+    args[0] = pyb_uart_make_new(&pyb_uart_type, 2, 0, args);
     args[1] = MP_OBJ_NEW_SMALL_INT(1);
     // extern mp_obj_t mp_os_dupterm(size_t n_args, const mp_obj_t *args);
     os_dupterm(2, args);
@@ -74,6 +75,9 @@ STATIC void pyb_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_k
         self->uart_id, self->baudrate, self->bits, _parity_name[self->parity],
         self->stop, uart_get_rxbuf_len(self->uart_id) - 1, self->timeout, self->timeout_char);
 }
+
+static uint8_t* uart_rxbuf[2];
+
 
 STATIC void pyb_uart_init_helper(pyb_uart_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     // ========================================
@@ -200,10 +204,10 @@ STATIC void pyb_uart_init_helper(pyb_uart_obj_t *self, size_t n_args, const mp_o
         uint8_t *buf;
         if (len <= UART_STATIC_RXBUF_LEN) {
             buf = uart_ringbuf_array[self->uart_id];
-            MP_STATE_PORT(uart_rxbuf[self->uart_id]) = NULL; // clear any old pointer
+            uart_rxbuf[self->uart_id] = NULL; // clear any old pointer
         } else {
             buf = m_new(uint8_t, len);
-            MP_STATE_PORT(uart_rxbuf[self->uart_id]) = buf; // retain root pointer
+            uart_rxbuf[self->uart_id] = buf; // retain root pointer
         }
         uart_set_rxbuf(self->uart_id, buf, len);
     }
@@ -394,13 +398,16 @@ STATIC const mp_stream_p_t uart_stream_p = {
     .is_text = false,
 };
 
-const mp_obj_type_t pyb_uart_type = {
-    { &mp_type_type },
-    .name = MP_QSTR_UART,
-    .print = pyb_uart_print,
-    .make_new = pyb_uart_make_new,
-    .getiter = mp_identity_getiter,
-    .iternext = mp_stream_unbuffered_iter,
-    .protocol = &uart_stream_p,
-    .locals_dict = (mp_obj_dict_t*)&pyb_uart_locals_dict,
-};
+MP_DEFINE_CONST_OBJ_TYPE(
+    pyb_uart_type,
+    MP_QSTR_UART,
+    MP_TYPE_FLAG_NONE,
+    print, pyb_uart_print,
+    make_new, pyb_uart_make_new,
+    protocol, &uart_stream_p,
+    locals_dict, &pyb_uart_locals_dict
+);
+
+MP_REGISTER_ROOT_POINTER(const char * readline_hist[8]);
+MP_REGISTER_ROOT_POINTER(uint8_t* uart_rxbuf[2]);
+
