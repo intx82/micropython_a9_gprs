@@ -34,7 +34,7 @@
 #include "py/runtime.h"
 #include "py/binary.h"
 #include "py/objexcept.h"
-#include "lib/timeutils/timeutils.h"
+#include "shared/timeutils/timeutils.h"
 
 #include "api_gps.h"
 #include "api_os.h"

@@ -226,16 +226,16 @@ STATIC const mp_stream_p_t internal_flash_fileio_stream_p = {
     .ioctl = internal_flash_file_obj_ioctl,
 };
 
-const mp_obj_type_t mp_type_internal_flash_fileio = {
-    { &mp_type_type },
-    .name = MP_QSTR_FileIO,
-    .print = internal_flash_file_obj_print,
-    .make_new = internal_flash_file_obj_make_new,
-    .getiter = mp_identity_getiter,
-    .iternext = mp_stream_unbuffered_iter,
-    .protocol = &internal_flash_fileio_stream_p,
-    .locals_dict = (mp_obj_dict_t*)&vfs_fat_rawfile_locals_dict,
-};
+MP_DEFINE_CONST_OBJ_TYPE(
+    mp_type_internal_flash_fileio,
+    MP_QSTR_FileIO,
+    MP_TYPE_FLAG_NONE,
+    print, internal_flash_file_obj_print,
+    make_new, internal_flash_file_obj_make_new,
+    protocol, &internal_flash_fileio_stream_p,
+    locals_dict, &vfs_fat_rawfile_locals_dict
+    );
+
 #endif
 
 STATIC const mp_stream_p_t internal_flash_textio_stream_p = {
@@ -245,16 +245,16 @@ STATIC const mp_stream_p_t internal_flash_textio_stream_p = {
     .is_text = true,
 };
 
-const mp_obj_type_t mp_type_internal_flash_textio = {
-    { &mp_type_type },
-    .name = MP_QSTR_TextIOWrapper,
-    .print = internal_flash_file_obj_print,
-    .make_new = internal_flash_file_obj_make_new,
-    .getiter = mp_identity_getiter,
-    .iternext = mp_stream_unbuffered_iter,
-    .protocol = &internal_flash_textio_stream_p,
-    .locals_dict = (mp_obj_dict_t*)&vfs_fat_rawfile_locals_dict,
-};
+MP_DEFINE_CONST_OBJ_TYPE(
+    mp_type_internal_flash_textio,
+    MP_QSTR_TextIOWrapper,
+    MP_TYPE_FLAG_NONE,
+    print, internal_flash_file_obj_print,
+    make_new, internal_flash_file_obj_make_new,
+    protocol, &internal_flash_textio_stream_p,
+    locals_dict, &vfs_fat_rawfile_locals_dict
+);
+
 
 mp_obj_t internal_flash_open(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     // ========================================

@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "py/ringbuf.h"
+#include "py/runtime.h"
 
 #include "api_hal_uart.h"
 
@@ -82,7 +83,10 @@ UART_Config_t uart_dev[] = {
 // -----------------------
 
 void soft_reset(void);
-void mp_keyboard_interrupt(void);
+
+void mp_keyboard_interrupt(void) {
+    mp_raise_type(&mp_type_KeyboardInterrupt);
+}
 
 static bool uart_config(uint8_t uart) {
     // Updates the configuration of UART port
@@ -174,7 +178,7 @@ void uart_set_rxbuf(uint8_t uart, uint8_t *buf, int len) {
 // Task-based UART interface
 /*
 #include "py/obj.h"
-#include "lib/utils/pyexec.h"
+#include "shared/runtime/pyexec.h"
 
 #if MICROPY_REPL_EVENT_DRIVEN
 void uart_task_handler(os_event_t *evt) {

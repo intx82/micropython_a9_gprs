@@ -665,14 +665,16 @@ STATIC const mp_rom_map_elem_t sms_locals_dict_table[] = {
 
 STATIC MP_DEFINE_CONST_DICT(sms_locals_dict, sms_locals_dict_table);
 
-STATIC const mp_obj_type_t modcellular_sms_type = {
-    { &mp_type_type },
-    .name = MP_QSTR_SMS,
-    .make_new = modcellular_sms_make_new,
-    .print = modcellular_sms_print,
-    .attr = modcellular_sms_attr,
-    .locals_dict = (mp_obj_dict_t*)&sms_locals_dict,
-};
+
+STATIC MP_DEFINE_CONST_OBJ_TYPE(
+    modcellular_sms_type,
+    MP_QSTR_SMS,
+    MP_TYPE_FLAG_NONE,
+    print, modcellular_sms_print,
+    make_new, modcellular_sms_make_new,
+    attr, modcellular_sms_attr,
+    locals_dict, &sms_locals_dict
+);
 
 // -------
 // Private

@@ -38,7 +38,7 @@
 #include "py/stackctrl.h"
 #include "py/mpstate.h"
 #include "py/mphal.h"
-#include "lib/utils/pyexec.h"
+#include "shared/runtime/pyexec.h"
 
 #include "stdbool.h"
 #include "api_os.h"
@@ -107,6 +107,11 @@ extern mp_uint_t gc_helper_get_regs_and_sp(mp_uint_t*);
     }
 }*/
 #endif
+
+
+void __builtin_unreachable (void) {
+
+}
 
 STATIC void *stack_top;
 
