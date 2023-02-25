@@ -28,7 +28,8 @@ QSTR_DEFS = qstrdefsport.h
 #############################################
 
 # MicroPython feature configurations
-# MICROPY_PY_USSL = 1
+MICROPY_PY_USSL = 1
+MICROPY_SSL_MBEDTLS = 1
 # MICROPY_SSL_AXTLS = 1
 # AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
 
@@ -37,6 +38,14 @@ FROZEN_MANIFEST ?= boards/manifest.py
 # include py core make definitions
 include $(TOP)/py/py.mk
 include $(TOP)/extmod/extmod.mk
+
+SRC_C =
+
+ifeq ($(MICROPY_SSL_MBEDTLS),1)
+GIT_SUBMODULES += lib/mbedtls
+INC += -I$(TOP)/$(MBEDTLS_DIR)/include
+SRC_C += mbedtls/mbedtls_port.c
+endif
 
 #############################################
 
@@ -99,10 +108,11 @@ INC += -I$(TOP)
 INC += -I$(BUILD_PATH_ABS)
 INC += -I${CSDK_PATH}/include \
        -I${CSDK_PATH}/include/std_inc \
+	   -I$(CSDTK_PATH)/sys-include \
 	   -I${CSDK_PATH}/include/api_inc \
 	   -I${CSDK_PATH}/libs/utils/include \
 	   -I${CSDK_PATH}/libs/gps/include \
-	   -I${CSDK_PATH}/libs/gps/minmea/src 
+	   -I${CSDK_PATH}/libs/gps/minmea/src
 
 CFLAGS = $(INC) -Wshadow \
           -std=gnu99 \
@@ -117,12 +127,14 @@ CFLAGS = $(INC) -Wshadow \
           -G0 -Wall -march=xcpu -mtune=xcpu -Wa,-march=xcpu,-mtune=xcpu -EL -mexplicit-relocs -fweb -frename-registers -mmemcpy -mmips-tfile -nostartfiles -nostdlib -nostdinc -nodefaultlibs -c -pipe \
           -fwide-exec-charset=UTF-16LE -fshort-wchar \
 		  -mips16 
+
 CFLAGS += $(CFLAGS_MOD)
+CFLAGS += $(CFLAGS_EXTMOD)
 CFLAGS += $(CFLAGS_THIRDPARTY)
 
 ASFLAGS = --warn -EL -march=xcpu -mtune=xcpu
 
-SRC_C = \
+SRC_C += \
 	main.c \
 	posix_helpers.c \
 	fatal.c \
