@@ -167,9 +167,6 @@
 // #define MICROPY_PY_MACHINE_SPI_MAKE_NEW     machine_hw_spi_make_new
 #define MICROPY_HW_SOFTSPI_MIN_DELAY        (0)
 #define MICROPY_HW_SOFTSPI_MAX_BAUDRATE     (500000)
-#define MICROPY_PY_USSL                     (1)
-// #define MICROPY_SSL_AXTLS                   (1)
-// #define MICROPY_SSL_MBEDTLS                 (1)
 // #define MICROPY_PY_USSL_FINALISER           (1)
 #define MICROPY_PY_FRAMEBUF                 (0)
 
