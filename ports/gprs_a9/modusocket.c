@@ -818,3 +818,5 @@ const mp_obj_module_t usocket_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_usocket_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_usocket, usocket_module);

@@ -161,12 +161,13 @@
 // #define MICROPY_PY_MACHINE_PULSE            (1)
 // #define MICROPY_PY_MACHINE_I2C              (1)
 #define MICROPY_PY_MACHINE_SPI              (1)
+#define MICROPY_PY_MACHINE_SOFTSPI          (1)
 // #define MICROPY_PY_MACHINE_SPI_MSB          (1)
 // #define MICROPY_PY_MACHINE_SPI_LSB          (1)
 // #define MICROPY_PY_MACHINE_SPI_MAKE_NEW     machine_hw_spi_make_new
 #define MICROPY_HW_SOFTSPI_MIN_DELAY        (0)
 #define MICROPY_HW_SOFTSPI_MAX_BAUDRATE     (500000)
-// #define MICROPY_PY_USSL                     (1)
+#define MICROPY_PY_USSL                     (1)
 // #define MICROPY_SSL_AXTLS                   (1)
 // #define MICROPY_SSL_MBEDTLS                 (1)
 // #define MICROPY_PY_USSL_FINALISER           (1)
@@ -196,25 +197,6 @@
     { MP_OBJ_NEW_QSTR(MP_QSTR_input), (mp_obj_t)&mp_builtin_input_obj }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_open), (mp_obj_t)&mp_builtin_open_obj },
 
-// extra built in modules to add to the list of known ones
-extern const struct _mp_obj_module_t mp_module_machine;
-extern const struct _mp_obj_module_t uos_module;
-extern const struct _mp_obj_module_t utime_module;
-extern const struct _mp_obj_module_t chip_module;
-extern const struct _mp_obj_module_t cellular_module;
-extern const struct _mp_obj_module_t gps_module;
-extern const struct _mp_obj_module_t usocket_module;
-extern const struct _mp_obj_module_t i2c_module;
-
-#define MICROPY_PORT_BUILTIN_MODULES \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_machine), (mp_obj_t)&mp_module_machine }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_uos), (mp_obj_t)&uos_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_utime), (mp_obj_t)&utime_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_chip), (mp_obj_t)&chip_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_cellular), (mp_obj_t)&cellular_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_gps), (mp_obj_t)&gps_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_usocket), (mp_obj_t)&usocket_module }, \
-    { MP_OBJ_NEW_QSTR(MP_QSTR_i2c), (mp_obj_t)&i2c_module }, \
 
 // type definitions for the specific machine
 

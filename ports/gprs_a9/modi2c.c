@@ -246,3 +246,5 @@ const mp_obj_module_t i2c_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_i2c_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_i2c, i2c_module);
