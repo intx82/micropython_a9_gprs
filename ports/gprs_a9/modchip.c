@@ -101,3 +101,4 @@ const mp_obj_module_t chip_module = {
     .globals = (mp_obj_dict_t*)&chip_module_globals,
 };
 
+MP_REGISTER_MODULE(MP_QSTR_chip, chip_module);

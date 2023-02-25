@@ -1371,3 +1371,5 @@ const mp_obj_module_t cellular_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_cellular_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_cellular, cellular_module);

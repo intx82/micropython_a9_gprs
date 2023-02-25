@@ -373,3 +373,5 @@ const mp_obj_module_t gps_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_gps_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_gps, gps_module);

@@ -245,7 +245,7 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_on), (mp_obj_t)&modmachine_watchdog_on_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_off), (mp_obj_t)&modmachine_watchdog_off_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_reset), (mp_obj_t)&modmachine_watchdog_reset_obj },
-    #if MICROPY_PY_MACHINE_SPI
+    #if MICROPY_PY_MACHINE_SPI && MICROPY_PY_MACHINE_SOFTSPI
     { MP_ROM_QSTR(MP_QSTR_SPI), MP_ROM_PTR(&mp_machine_soft_spi_type) },
     #endif
 
@@ -293,4 +293,4 @@ const mp_obj_module_t mp_module_machine = {
     .globals = (mp_obj_dict_t*)&machine_module_globals,
 };
 
-
+MP_REGISTER_MODULE(MP_QSTR_machine, mp_module_machine);
