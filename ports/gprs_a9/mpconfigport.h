@@ -135,6 +135,9 @@
 #define MICROPY_PY_THREAD                   (0)
 #define MICROPY_PY_THREAD_GIL               (0)
 #define MICROPY_PY_THREAD_GIL_VM_DIVISOR    (32)
+#define MICROPY_PY_FSTRINGS                 (1)
+#define MICROPY_PY_REVERSE_SPECIAL_METHODS  (1)
+#define MICROPY_PY_BUILTINS_BYTES_HEX       (1)
 
 
 // extended modules
