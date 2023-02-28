@@ -29,9 +29,9 @@ QSTR_DEFS = qstrdefsport.h
 
 # MicroPython feature configurations
 MICROPY_PY_USSL = 1
-MICROPY_SSL_MBEDTLS = 1
-# MICROPY_SSL_AXTLS = 1
-# AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
+# MICROPY_SSL_MBEDTLS = 1
+MICROPY_SSL_AXTLS = 1
+AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
 
 FROZEN_MANIFEST ?= boards/manifest.py
 
@@ -41,10 +41,22 @@ include $(TOP)/extmod/extmod.mk
 
 SRC_C =
 
+GIT_SUBMODULES += lib/micropython-lib
+
 ifeq ($(MICROPY_SSL_MBEDTLS),1)
 GIT_SUBMODULES += lib/mbedtls
 INC += -I$(TOP)/$(MBEDTLS_DIR)/include
 SRC_C += mbedtls/mbedtls_port.c
+endif
+
+ifeq ($(MICROPY_SSL_AXTLS),1)
+GIT_SUBMODULES += lib/axtls
+INC += -I$(TOP)/$(AXTLS_DIR)/crypto
+INC += -I$(TOP)/$(AXTLS_DIR)/ssl
+INC += -I$(TOP)/extmod/axtls-include
+INC += -I$(TOP)/lib/crypto-algorithms
+
+CFLAGS_EXTMOD += -DMICROPY_SSL_AXTLS=1 -Wno-all -Wno-unused-parameter -Wno-uninitialized -Wno-sign-compare -Wno-old-style-definition $(AXTLS_DEFS_EXTRA)
 endif
 
 #############################################
@@ -108,7 +120,6 @@ INC += -I$(TOP)
 INC += -I$(BUILD_PATH_ABS)
 INC += -I${CSDK_PATH}/include \
        -I${CSDK_PATH}/include/std_inc \
-	   -I$(CSDTK_PATH)/sys-include \
 	   -I${CSDK_PATH}/include/api_inc \
 	   -I${CSDK_PATH}/libs/utils/include \
 	   -I${CSDK_PATH}/libs/gps/include \
