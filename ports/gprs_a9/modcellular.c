@@ -1046,7 +1046,7 @@ STATIC mp_obj_t modcellular_register(size_t n_args, const mp_obj_t *args) {
             return mp_const_none;
         }
         WAIT_UNTIL(!(network_status & NTW_REG_BIT), TIMEOUT_REG, 100, mp_raise_OSError(MP_ETIMEDOUT));
-
+        return mp_const_none;
     } else if (n_args == 2) {
         mp_obj_array_t *op_id = MP_OBJ_TO_PTR(args[0]);
         mp_int_t op_mode = mp_obj_get_int(args[1]);
