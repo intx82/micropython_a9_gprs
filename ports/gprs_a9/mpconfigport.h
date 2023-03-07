@@ -138,7 +138,7 @@
 #define MICROPY_PY_FSTRINGS                 (1)
 #define MICROPY_PY_REVERSE_SPECIAL_METHODS  (1)
 #define MICROPY_PY_BUILTINS_BYTES_HEX       (1)
-
+#define MICROPY_EPOCH_IS_1970               (1)
 
 // extended modules
 #define MICROPY_PY_UASYNCIO                 (1)
