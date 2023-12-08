@@ -520,13 +520,14 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(mp_stream_ioctl_obj, 2, 3, stream_ioctl);
  * POSIX-compatible software to work with MicroPython streams.
  */
 
-int mp_stream_errno;
 #include <errno.h>
+
+extern int errno;
 
 ssize_t mp_stream_posix_write(void *stream, const void *buf, size_t len) {
     mp_obj_base_t *o = stream;
-    const mp_stream_p_t *stream_p = o->type->protocol;
-    mp_uint_t out_sz = stream_p->write(MP_OBJ_FROM_PTR(stream), buf, len, &mp_stream_errno);
+    const mp_stream_p_t *stream_p = MP_OBJ_TYPE_GET_SLOT(o->type, protocol);
+    mp_uint_t out_sz = stream_p->write(MP_OBJ_FROM_PTR(stream), buf, len, &errno);
     if (out_sz == MP_STREAM_ERROR) {
         return -1;
     } else {
@@ -536,8 +537,8 @@ ssize_t mp_stream_posix_write(void *stream, const void *buf, size_t len) {
 
 ssize_t mp_stream_posix_read(void *stream, void *buf, size_t len) {
     mp_obj_base_t *o = stream;
-    const mp_stream_p_t *stream_p = o->type->protocol;
-    mp_uint_t out_sz = stream_p->read(MP_OBJ_FROM_PTR(stream), buf, len, &mp_stream_errno);
+    const mp_stream_p_t *stream_p = MP_OBJ_TYPE_GET_SLOT(o->type, protocol);
+    mp_uint_t out_sz = stream_p->read(MP_OBJ_FROM_PTR(stream), buf, len, &errno);
     if (out_sz == MP_STREAM_ERROR) {
         return -1;
     } else {
@@ -551,7 +552,7 @@ off_t mp_stream_posix_lseek(void *stream, off_t offset, int whence) {
     struct mp_stream_seek_t seek_s;
     seek_s.offset = offset;
     seek_s.whence = whence;
-    mp_uint_t res = stream_p->ioctl(MP_OBJ_FROM_PTR(stream), MP_STREAM_SEEK, (mp_uint_t)(uintptr_t)&seek_s, &mp_stream_errno);
+    mp_uint_t res = stream_p->ioctl(MP_OBJ_FROM_PTR(stream), MP_STREAM_SEEK, (mp_uint_t)(uintptr_t)&seek_s, &errno);
     if (res == MP_STREAM_ERROR) {
         return -1;
     }
@@ -560,8 +561,8 @@ off_t mp_stream_posix_lseek(void *stream, off_t offset, int whence) {
 
 int mp_stream_posix_fsync(void *stream) {
     mp_obj_base_t *o = stream;
-    const mp_stream_p_t *stream_p = o->type->protocol;
-    mp_uint_t res = stream_p->ioctl(MP_OBJ_FROM_PTR(stream), MP_STREAM_FLUSH, 0, &mp_stream_errno);
+    const mp_stream_p_t *stream_p = MP_OBJ_TYPE_GET_SLOT(o->type, protocol);
+    mp_uint_t res = stream_p->ioctl(MP_OBJ_FROM_PTR(stream), MP_STREAM_FLUSH, 0, &errno);
     if (res == MP_STREAM_ERROR) {
         return -1;
     }

@@ -38,7 +38,7 @@
 #include "py/objexcept.h"
 #include "py/mperrno.h"
 #include "py/stream.h"
-#include "lib/netutils/netutils.h"
+#include "shared/netutils/netutils.h"
 
 #include "api_network.h"
 #include "ram_pointers.h"
@@ -360,7 +360,7 @@ mp_obj_t _socket_recvfrom(mp_obj_t self_in, mp_obj_t len_in, struct sockaddr *fr
     }
 
     vstr.len = r;
-    return mp_obj_new_str_from_vstr(&mp_type_bytes, &vstr);
+    return mp_obj_new_str_from_vstr(&vstr);
 }
 
 STATIC mp_obj_t socket_recv(mp_obj_t self_in, mp_obj_t bufsize) {
@@ -607,13 +607,16 @@ STATIC const mp_stream_p_t socket_stream_p = {
     .ioctl = socket_stream_ioctl,
 };
 
-STATIC const mp_obj_type_t socket_type = {
-    { &mp_type_type },
-    .name = MP_QSTR_socket,
-    .make_new = socket_make_new,
-    .protocol = &socket_stream_p,
-    .locals_dict = (mp_obj_dict_t*)&socket_locals_dict,
-};
+
+STATIC MP_DEFINE_CONST_OBJ_TYPE(
+    socket_type,
+    MP_QSTR_socket,
+    MP_TYPE_FLAG_NONE,
+    make_new, socket_make_new,
+    protocol, &socket_stream_p,
+    locals_dict, &socket_locals_dict
+);
+
 
 // -------
 // Methods
@@ -815,3 +818,5 @@ const mp_obj_module_t usocket_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_usocket_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_usocket, usocket_module);

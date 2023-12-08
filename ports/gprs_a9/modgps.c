@@ -34,7 +34,7 @@
 #include "py/runtime.h"
 #include "py/binary.h"
 #include "py/objexcept.h"
-#include "lib/timeutils/timeutils.h"
+#include "shared/timeutils/timeutils.h"
 
 #include "api_gps.h"
 #include "api_os.h"
@@ -181,8 +181,12 @@ STATIC mp_obj_t modgps_time(void) {
 
     struct minmea_date date = gpsInfo->rmc.date;
     struct minmea_time time = gpsInfo->rmc.time;
-
+#if !MICROPY_EPOCH_IS_1970
     mp_uint_t result = timeutils_mktime(date.year + 2000, date.month, date.day, time.hours, time.minutes, time.seconds);
+#else
+    mp_uint_t result = timeutils_mktime(date.year + 1970, date.month, date.day, time.hours, time.minutes, time.seconds);
+#endif
+
     // Note: the module may report dates between 1980 and 2000 as well: they will be mapped onto the time frame 2080-2100
     return mp_obj_new_int_from_uint(result);
 }
@@ -190,7 +194,11 @@ STATIC mp_obj_t modgps_time(void) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(modgps_time_obj, modgps_time);
 
 STATIC mp_obj_t _get_time(struct minmea_date date, struct minmea_time time) {
+#if !MICROPY_EPOCH_IS_1970
     mp_uint_t result = timeutils_mktime(date.year + 2000, date.month, date.day, time.hours, time.minutes, time.seconds);
+#else
+    mp_uint_t result = timeutils_mktime(date.year + 2000, date.month, date.day, time.hours, time.minutes, time.seconds);
+#endif
     // Note: the module may report dates between 1980 and 2000 as well: they will be mapped onto the time frame 2080-2100
     return mp_obj_new_int_from_uint(result);
 }
@@ -373,3 +381,5 @@ const mp_obj_module_t gps_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_gps_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_gps, gps_module);

@@ -158,7 +158,7 @@ STATIC mp_obj_t os_urandom(mp_obj_t num) {
         vstr.buf[i] = r;
         r >>= 8;
     }
-    return mp_obj_new_str_from_vstr(&mp_type_bytes, &vstr);
+    return mp_obj_new_str_from_vstr(&vstr);
 }
 
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(os_urandom_obj, os_urandom);
@@ -408,11 +408,13 @@ STATIC const mp_rom_map_elem_t internal_flash_locals_dict_table[] = {
 
 STATIC MP_DEFINE_CONST_DICT(internal_flash_locals_dict, internal_flash_locals_dict_table);
 
-STATIC const mp_obj_type_t moduos_internal_flash_type = {
-    { &mp_type_type },
-    .name = MP_QSTR_internal_flash,
-    .locals_dict = (mp_obj_dict_t*)&internal_flash_locals_dict,
-};
+
+STATIC MP_DEFINE_CONST_OBJ_TYPE(
+    moduos_internal_flash_type,
+    MP_QSTR_internal_flash,
+    MP_TYPE_FLAG_NONE,
+    locals_dict, &internal_flash_locals_dict
+    );
 
 mp_obj_t os_dupterm(size_t n_args, const mp_obj_t *args) {
     // ========================================
@@ -462,3 +464,5 @@ const mp_obj_module_t uos_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&os_module_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_uos, uos_module);

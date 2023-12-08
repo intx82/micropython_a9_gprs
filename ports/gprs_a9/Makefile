@@ -29,6 +29,7 @@ QSTR_DEFS = qstrdefsport.h
 
 # MicroPython feature configurations
 MICROPY_PY_USSL = 1
+# MICROPY_SSL_MBEDTLS = 1
 MICROPY_SSL_AXTLS = 1
 AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
 
@@ -36,6 +37,27 @@ FROZEN_MANIFEST ?= boards/manifest.py
 
 # include py core make definitions
 include $(TOP)/py/py.mk
+include $(TOP)/extmod/extmod.mk
+
+SRC_C =
+
+GIT_SUBMODULES += lib/micropython-lib
+
+ifeq ($(MICROPY_SSL_MBEDTLS),1)
+GIT_SUBMODULES += lib/mbedtls
+INC += -I$(TOP)/$(MBEDTLS_DIR)/include
+SRC_C += mbedtls/mbedtls_port.c
+endif
+
+ifeq ($(MICROPY_SSL_AXTLS),1)
+GIT_SUBMODULES += lib/axtls
+INC += -I$(TOP)/$(AXTLS_DIR)/crypto
+INC += -I$(TOP)/$(AXTLS_DIR)/ssl
+INC += -I$(TOP)/extmod/axtls-include
+INC += -I$(TOP)/lib/crypto-algorithms
+
+CFLAGS_EXTMOD += -DMICROPY_SSL_AXTLS=1 -Wno-all -Wno-unused-parameter -Wno-uninitialized -Wno-sign-compare -Wno-old-style-definition $(AXTLS_DEFS_EXTRA)
+endif
 
 #############################################
 
@@ -101,10 +123,10 @@ INC += -I${CSDK_PATH}/include \
 	   -I${CSDK_PATH}/include/api_inc \
 	   -I${CSDK_PATH}/libs/utils/include \
 	   -I${CSDK_PATH}/libs/gps/include \
-	   -I${CSDK_PATH}/libs/gps/minmea/src 
+	   -I${CSDK_PATH}/libs/gps/minmea/src
 
 CFLAGS = $(INC) -Wshadow \
-		  -std=gnu99 \
+          -std=gnu99 \
           -Os -g -fno-inline-small-functions -fno-inline-functions -fno-align-functions -fno-align-jumps -fno-align-loops -fno-align-labels \
           -msoft-float \
           -Wunused-function \
@@ -116,11 +138,14 @@ CFLAGS = $(INC) -Wshadow \
           -G0 -Wall -march=xcpu -mtune=xcpu -Wa,-march=xcpu,-mtune=xcpu -EL -mexplicit-relocs -fweb -frename-registers -mmemcpy -mmips-tfile -nostartfiles -nostdlib -nostdinc -nodefaultlibs -c -pipe \
           -fwide-exec-charset=UTF-16LE -fshort-wchar \
 		  -mips16 
+
 CFLAGS += $(CFLAGS_MOD)
+CFLAGS += $(CFLAGS_EXTMOD)
+CFLAGS += $(CFLAGS_THIRDPARTY)
 
 ASFLAGS = --warn -EL -march=xcpu -mtune=xcpu
 
-SRC_C = \
+SRC_C += \
 	main.c \
 	posix_helpers.c \
 	fatal.c \
@@ -144,13 +169,16 @@ SRC_C = \
 	machine_rtc.c
 
 
-LIB_SRC_C = $(addprefix lib/,\
-	mp-readline/readline.c \
+LIB_SRC_C = 
+
+SHARED_SRC_C = $(addprefix shared/,\
+	libc/__errno.c \
 	netutils/netutils.c \
+	readline/readline.c \
+	runtime/interrupt_char.c \
+	runtime/pyexec.c \
+	runtime/sys_stdio_mphal.c \
 	timeutils/timeutils.c \
-	utils/pyexec.c \
-	utils/interrupt_char.c \
-	utils/sys_stdio_mphal.c \
 	)
 
 LIB_SRC_C += \
@@ -169,6 +197,7 @@ OBJ_MP += $(PY_O)
 OBJ_MP += $(addprefix $(BUILD)/, $(SRC_C:.c=.o))
 
 OBJ = $(OBJ_MP) $(PY_CORE_O)
+OBJ += $(addprefix $(BUILD_PATH)/, $(SHARED_SRC_C:.c=.o))
 OBJ += $(addprefix $(BUILD_PATH)/, $(LIB_SRC_C:.c=.o))
 OBJ += $(addprefix $(BUILD_PATH)/, $(SRC_S:.s=.o))
 OBJ += $(addprefix $(BUILD_PATH)/, $(SRC_MOD:.c=.o))

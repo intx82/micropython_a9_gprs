@@ -1,12 +1,16 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <errno.h>
+
 #include <sys/time.h>
 #include "py/mphal.h"
 #include "py/gc.h"
 #include <sdk_init.h>
+#include <stdint.h>
+#include "errno.h"
 
 #if MICROPY_ENABLE_GC
+
+int errno;
 
 #include "py/gc.h"
 
@@ -14,7 +18,7 @@ void *malloc(size_t size) {
     void *p = gc_alloc(size, false);
     if (p == NULL) {
         // POSIX requires ENOMEM to be set in case of error
-        // errno = ENOMEM;
+        errno = ENOMEM;
     }
     return p;
 }
@@ -27,7 +31,7 @@ void *realloc(void *ptr, size_t size) {
     void *p = gc_realloc(ptr, size, true);
     if (p == NULL) {
         // POSIX requires ENOMEM to be set in case of error
-        // errno = ENOMEM;
+        errno = ENOMEM;
     }
     return p;
 }

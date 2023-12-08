@@ -1,11 +1,9 @@
 /*
  * This file is part of the MicroPython project, http://micropython.org/
  *
- * Development of the code in this file was sponsored by Microbric Pty Ltd
- *
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 pulkin
+ * Copyright (c) 2018-2019 Damien P. George
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,40 +23,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#ifndef MICROPY_INCLUDED_MBEDTLS_CONFIG_H
+#define MICROPY_INCLUDED_MBEDTLS_CONFIG_H
 
-#ifndef __MPHALPORT_H
-#define __MPHALPORT_H
+// Set mbedtls configuration
+#define MBEDTLS_CIPHER_MODE_CTR // needed for MICROPY_PY_UCRYPTOLIB_CTR
 
-#include "stdint.h"
-#include "stdbool.h"
-#include "shared/runtime/interrupt_char.h"
-#include "time.h"
-#include "py/obj.h"
-#include "uart.h"
+// Set mbedtls configuration
+#define MBEDTLS_ECP_NIST_OPTIM
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
 
-#define MP_HAL_PIN_FMT "%u"
-#define mp_hal_pin_name(p) (p)
-#define mp_hal_pin_obj_t uint32_t
+// Enable mbedtls modules
+#define MBEDTLS_GCM_C
+#define MBEDTLS_HAVE_TIME
+#define MBEDTLS_HAVE_TIME_DATE
 
-extern int uart_attached_to_dupterm[UART_NPORTS];
+// Time hook
+#include <time.h>
 
-void mp_hal_set_interrupt_char(int c);
-void mp_hal_pyrepl_uart_init();
+#define MBEDTLS_PLATFORM_TIME_MACRO TIME_GetTime
 
-uint32_t mp_hal_ticks_ms(void);
-uint32_t mp_hal_ticks_us(void);
-void mp_hal_delay_ms(uint32_t ms);
-void mp_hal_delay_us(uint32_t us);
-void mp_hal_delay_us_fast(uint32_t us);
-__attribute__((always_inline)) static inline uint32_t mp_hal_ticks_cpu(void) {
-  return clock();
-}
+#undef MBEDTLS_FS_IO
+#undef MBEDTLS_HAVE_ASM
+#undef MBEDTLS_AESNI_C
 
-mp_hal_pin_obj_t mp_hal_get_pin_obj(mp_obj_t pin_in);
-void mp_hal_pin_input(mp_hal_pin_obj_t pin_id);
-void mp_hal_pin_output(mp_hal_pin_obj_t pin_id);
-int mp_hal_pin_read(mp_hal_pin_obj_t pin_id);
-void mp_hal_pin_write(mp_hal_pin_obj_t pin_id, int value);
-
+#ifndef SIZE_MAX
+#define SIZE_MAX ((size_t) -1)
 #endif
 
+#ifndef UINT64_MAX
+#define UINT64_MAX ((uint64_t) -1)
+#endif
+
+
+
+// Include common mbedtls configuration.
+#include "extmod/mbedtls/mbedtls_config_common.h"
+
+#endif /* MICROPY_INCLUDED_MBEDTLS_CONFIG_H */

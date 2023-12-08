@@ -665,14 +665,16 @@ STATIC const mp_rom_map_elem_t sms_locals_dict_table[] = {
 
 STATIC MP_DEFINE_CONST_DICT(sms_locals_dict, sms_locals_dict_table);
 
-STATIC const mp_obj_type_t modcellular_sms_type = {
-    { &mp_type_type },
-    .name = MP_QSTR_SMS,
-    .make_new = modcellular_sms_make_new,
-    .print = modcellular_sms_print,
-    .attr = modcellular_sms_attr,
-    .locals_dict = (mp_obj_dict_t*)&sms_locals_dict,
-};
+
+STATIC MP_DEFINE_CONST_OBJ_TYPE(
+    modcellular_sms_type,
+    MP_QSTR_SMS,
+    MP_TYPE_FLAG_NONE,
+    print, modcellular_sms_print,
+    make_new, modcellular_sms_make_new,
+    attr, modcellular_sms_attr,
+    locals_dict, &sms_locals_dict
+);
 
 // -------
 // Private
@@ -1044,7 +1046,7 @@ STATIC mp_obj_t modcellular_register(size_t n_args, const mp_obj_t *args) {
             return mp_const_none;
         }
         WAIT_UNTIL(!(network_status & NTW_REG_BIT), TIMEOUT_REG, 100, mp_raise_OSError(MP_ETIMEDOUT));
-
+        return mp_const_none;
     } else if (n_args == 2) {
         mp_obj_array_t *op_id = MP_OBJ_TO_PTR(args[0]);
         mp_int_t op_mode = mp_obj_get_int(args[1]);
@@ -1369,3 +1371,5 @@ const mp_obj_module_t cellular_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&mp_module_cellular_globals,
 };
+
+MP_REGISTER_MODULE(MP_QSTR_cellular, cellular_module);
