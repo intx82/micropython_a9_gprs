@@ -151,11 +151,10 @@ SRC_C += \
 	fatal.c \
 	uart.c \
 	help.c \
-	modmachine.c \
+	moda9.c \
 	machine_pin.c \
 	mphalport.c \
 	moduos.c \
-	modutime.c \
 	rng.c \
 	fatfs_port.c \
 	modchip.c \

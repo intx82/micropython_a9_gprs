@@ -1,3 +1,4 @@
+
 /*
  * This file is part of the MicroPython project, http://micropython.org/
  *
@@ -5,7 +6,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Damien P. George
+ * Copyright (c) 2019 pulkin
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,42 +27,17 @@
  * THE SOFTWARE.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/time.h>
-#include "time.h"
-#include "extmod/modtime.h"
+#include "py/obj.h"
+#include "api_event.h"
 
-#include "py/runtime.h"
-#include "shared/timeutils/timeutils.h"
-
-
-STATIC mp_obj_t mp_time_localtime_get(void) {
-    timeutils_struct_time_t tm;
-    mp_int_t seconds = TIME_GetTime();
-    timeutils_seconds_since_2000_to_struct_time(seconds, &tm);
-    mp_obj_t tuple[8] = {
-        tuple[0] = mp_obj_new_int(tm.tm_year),
-        tuple[1] = mp_obj_new_int(tm.tm_mon),
-        tuple[2] = mp_obj_new_int(tm.tm_mday),
-        tuple[3] = mp_obj_new_int(tm.tm_hour),
-        tuple[4] = mp_obj_new_int(tm.tm_min),
-        tuple[5] = mp_obj_new_int(tm.tm_sec),
-        tuple[6] = mp_obj_new_int(tm.tm_wday),
-        tuple[7] = mp_obj_new_int(tm.tm_yday),
-    };
-    return mp_obj_new_tuple(8, tuple);
-}
-
-STATIC mp_obj_t mp_time_time_get(void) {
-    // get date and time
-#if 0
-    timeutils_struct_time_t tm;
-    mp_int_t seconds = TIME_GetTime();
-    timeutils_seconds_since_2000_to_struct_time(seconds, &tm);
-
-    return mp_obj_new_int(timeutils_seconds_since_epoch(tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec));
-#else
-    return mp_obj_new_int(TIME_GetTime());
-#endif
-}
+typedef struct _pyb_uart_obj_t {
+    mp_obj_base_t base;
+    uint8_t uart_id;
+    uint8_t bits;
+    uint8_t parity;
+    uint8_t stop;
+    uint32_t baudrate;
+    uint16_t timeout;       // timeout waiting for first char (in ms)
+    uint16_t timeout_char;  // timeout waiting between chars (in ms)
+} pyb_uart_obj_t;
+extern const mp_obj_type_t pyb_uart_type;

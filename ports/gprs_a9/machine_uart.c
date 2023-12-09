@@ -35,8 +35,11 @@
 #include "py/mphal.h"
 
 #include "mphalport.h"
-#include "modmachine.h"
+#include "machine_uart.h"
+#include "extmod/modmachine.h"
+#include "mphalport.h"
 #include "moduos.h"
+
 
 STATIC const char *_parity_name[] = {"None", "1", "0"};
 

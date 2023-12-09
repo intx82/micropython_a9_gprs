@@ -57,7 +57,7 @@
 #include "mpconfigport.h"
 #include "modcellular.h"
 #include "modgps.h"
-#include "modmachine.h"
+#include "moda9.h"
 
 #define AppMain_TASK_STACK_SIZE    (2048 * 2)
 #define AppMain_TASK_PRIORITY      0
@@ -181,14 +181,14 @@ soft_reset:
     moduos_init0();
     modcellular_init0();
     modgps_init0();
-    modmachine_init0();
+    moda9_init0();
     mp_obj_list_init(mp_sys_path, 0);
     mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR_)); // current dir (or base dir of the script)
     mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR__slash_lib));
     mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR__slash_));
     mp_obj_list_init(mp_sys_argv, 0);
     // Startup scripts
-    pyexec_frozen_module("_boot.py");
+    pyexec_frozen_module("_boot.py", false);
     pyexec_file_if_exists("boot.py");
     if (pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL) {
         pyexec_file_if_exists("main.py");
@@ -244,15 +244,15 @@ void EventDispatch(API_Event_t* pEvent)
     switch(pEvent->id)
     {
         case API_EVENT_ID_POWER_ON:
-            modmachine_notify_power_on(pEvent);
+            moda9_notify_power_on(pEvent);
             break;
 
         case API_EVENT_ID_KEY_DOWN:
-            modmachine_notify_power_key_down(pEvent);
+            moda9_notify_power_key_down(pEvent);
             break;
         
         case API_EVENT_ID_KEY_UP:
-            modmachine_notify_power_key_up(pEvent);
+            moda9_notify_power_key_up(pEvent);
             break;
 
         // Network

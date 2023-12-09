@@ -26,26 +26,25 @@
  * THE SOFTWARE.
  */
 
-#include "modmachine.h"
-#include "extmod/machine_spi.h"
-
+#include "moda9.h"
 #include "mpconfigport.h"
 #include "stdint.h"
 #include "py/mpconfig.h"
 #include "py/obj.h"
 #include "py/runtime.h"
+#include "extmod/modmachine.h"
 
 #include "api_event.h"
 #include "api_hal_pm.h"
 #include "api_hal_watchdog.h"
 #include "api_hal_adc.h"
 
-STATIC mp_obj_t modmachine_watchdog_off(void);
+STATIC mp_obj_t moda9_watchdog_off(void);
 STATIC mp_obj_t power_key_callback = mp_const_none;
 
-void modmachine_init0(void) {
+void moda9_init0(void) {
     PM_SetSysMinFreq(PM_SYS_FREQ_312M);
-    modmachine_watchdog_off();
+    moda9_watchdog_off();
     modmachine_pin_init0();
     modmachine_uart_init0();
     power_key_callback = mp_const_none;
@@ -57,17 +56,17 @@ void modmachine_init0(void) {
 
 Power_On_Cause_t powerOnCause = POWER_ON_CAUSE_MAX;
 
-void modmachine_notify_power_on(API_Event_t* event) {
+void moda9_notify_power_on(API_Event_t* event) {
     powerOnCause = event->param1;
 }
 
-void modmachine_notify_power_key_down(API_Event_t* event) {
+void moda9_notify_power_key_down(API_Event_t* event) {
     if (power_key_callback && power_key_callback != mp_const_none) {
         mp_sched_schedule(power_key_callback, mp_obj_new_bool(1));
     }
 }
  
-void modmachine_notify_power_key_up(API_Event_t* event) {
+void moda9_notify_power_key_up(API_Event_t* event) {
     if (power_key_callback && power_key_callback != mp_const_none) {
         mp_sched_schedule(power_key_callback, mp_obj_new_bool(0));
     }
@@ -77,7 +76,7 @@ void modmachine_notify_power_key_up(API_Event_t* event) {
 // Methods
 // -------
 
-STATIC mp_obj_t modmachine_reset(void) {
+STATIC mp_obj_t moda9_reset(void) {
     // ========================================
     // Resets the module.
     // ========================================
@@ -85,9 +84,9 @@ STATIC mp_obj_t modmachine_reset(void) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_reset_obj, modmachine_reset);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_reset_obj, moda9_reset);
 
-STATIC mp_obj_t modmachine_set_idle(mp_obj_t flag) {
+STATIC mp_obj_t moda9_set_idle(mp_obj_t flag) {
     // ========================================
     // Puts the module into low-power mode by
     // tuning down frequencies and powering
@@ -102,9 +101,14 @@ STATIC mp_obj_t modmachine_set_idle(mp_obj_t flag) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(modmachine_set_idle_obj, modmachine_set_idle);
 
-STATIC mp_obj_t modmachine_set_min_freq(mp_obj_t freq) {
+void mp_machine_idle(void) {
+    moda9_set_idle(true);
+}
+
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(moda9_set_idle_obj, moda9_set_idle);
+
+STATIC mp_obj_t moda9_set_min_freq(mp_obj_t freq) {
     // ========================================
     // Sets the minimal CPU frequency.
     // Args:
@@ -121,9 +125,9 @@ STATIC mp_obj_t modmachine_set_min_freq(mp_obj_t freq) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(modmachine_set_min_freq_obj, modmachine_set_min_freq);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(moda9_set_min_freq_obj, moda9_set_min_freq);
 
-STATIC mp_obj_t modmachine_power_on_cause(void) {
+STATIC mp_obj_t moda9_power_on_cause(void) {
     // ========================================
     // Retrieves the last reason for the power on.
     // Returns:
@@ -154,9 +158,9 @@ STATIC mp_obj_t modmachine_power_on_cause(void) {
     }
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_power_on_cause_obj, modmachine_power_on_cause);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_power_on_cause_obj, moda9_power_on_cause);
 
-STATIC mp_obj_t modmachine_off(void) {
+STATIC mp_obj_t moda9_off(void) {
     // ========================================
     // Turns off the module.
     // ========================================
@@ -164,9 +168,9 @@ STATIC mp_obj_t modmachine_off(void) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_off_obj, modmachine_off);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_off_obj, moda9_off);
 
-STATIC mp_obj_t modmachine_get_input_voltage(void) {
+STATIC mp_obj_t moda9_get_input_voltage(void) {
     // ========================================
     // Retrieves the input voltage and the
     // estimated battery capacity in percents.
@@ -183,9 +187,9 @@ STATIC mp_obj_t modmachine_get_input_voltage(void) {
     return mp_obj_new_tuple(2, tuple);
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_get_input_voltage_obj, modmachine_get_input_voltage);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_get_input_voltage_obj, moda9_get_input_voltage);
 
-STATIC mp_obj_t modmachine_watchdog_on(mp_obj_t timeout) {
+STATIC mp_obj_t moda9_watchdog_on(mp_obj_t timeout) {
     // ========================================
     // Arms the hardware watchdog.
     // Args:
@@ -195,9 +199,9 @@ STATIC mp_obj_t modmachine_watchdog_on(mp_obj_t timeout) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(modmachine_watchdog_on_obj, modmachine_watchdog_on);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(moda9_watchdog_on_obj, moda9_watchdog_on);
 
-STATIC mp_obj_t modmachine_watchdog_off(void) {
+STATIC mp_obj_t moda9_watchdog_off(void) {
     // ========================================
     // Disarms the hardware watchdog.
     // ========================================
@@ -205,9 +209,9 @@ STATIC mp_obj_t modmachine_watchdog_off(void) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_watchdog_off_obj, modmachine_watchdog_off);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_watchdog_off_obj, moda9_watchdog_off);
 
-STATIC mp_obj_t modmachine_watchdog_reset(void) {
+STATIC mp_obj_t moda9_watchdog_reset(void) {
     // ========================================
     // Resets the watchdog timeout.
     // ========================================
@@ -215,9 +219,9 @@ STATIC mp_obj_t modmachine_watchdog_reset(void) {
     return mp_const_none;
 }
 
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(modmachine_watchdog_reset_obj, modmachine_watchdog_reset);
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(moda9_watchdog_reset_obj, moda9_watchdog_reset);
 
-STATIC mp_obj_t modmachine_on_power_key(mp_obj_t callable) {
+STATIC mp_obj_t moda9_on_power_key(mp_obj_t callable) {
     // ========================================
     // Sets a callback on power key press.
     // Args:
@@ -227,24 +231,20 @@ STATIC mp_obj_t modmachine_on_power_key(mp_obj_t callable) {
     power_key_callback = callable;
     return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(modmachine_on_power_key_obj, modmachine_on_power_key);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(moda9_on_power_key_obj, moda9_on_power_key);
 
-STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
-    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_umachine) },
-    { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&machine_pin_type) },
-    { MP_ROM_QSTR(MP_QSTR_ADC), MP_ROM_PTR(&machine_adc_type) },
-    { MP_ROM_QSTR(MP_QSTR_UART), MP_ROM_PTR(&pyb_uart_type) },
-    { MP_ROM_QSTR(MP_QSTR_RTC), MP_ROM_PTR(&pyb_rtc_type) },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_reset), (mp_obj_t)&modmachine_reset_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_set_idle), (mp_obj_t)&modmachine_set_idle_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_set_min_freq), (mp_obj_t)&modmachine_set_min_freq_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_power_on_cause), (mp_obj_t)&modmachine_power_on_cause_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_on_power_key), (mp_obj_t)&modmachine_on_power_key_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_off), (mp_obj_t)&modmachine_off_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_get_input_voltage), (mp_obj_t)&modmachine_get_input_voltage_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_on), (mp_obj_t)&modmachine_watchdog_on_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_off), (mp_obj_t)&modmachine_watchdog_off_obj },
-    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_reset), (mp_obj_t)&modmachine_watchdog_reset_obj },
+STATIC const mp_rom_map_elem_t a9_module_globals_table[] = {
+    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_a9) },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_reset), (mp_obj_t)&moda9_reset_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_set_idle), (mp_obj_t)&moda9_set_idle_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_set_min_freq), (mp_obj_t)&moda9_set_min_freq_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_power_on_cause), (mp_obj_t)&moda9_power_on_cause_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_on_power_key), (mp_obj_t)&moda9_on_power_key_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_off), (mp_obj_t)&moda9_off_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_get_input_voltage), (mp_obj_t)&moda9_get_input_voltage_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_on), (mp_obj_t)&moda9_watchdog_on_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_off), (mp_obj_t)&moda9_watchdog_off_obj },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_reset), (mp_obj_t)&moda9_watchdog_reset_obj },
     #if MICROPY_PY_MACHINE_SPI && MICROPY_PY_MACHINE_SOFTSPI
     { MP_ROM_QSTR(MP_QSTR_SPI), MP_ROM_PTR(&mp_machine_soft_spi_type) },
     #endif
@@ -286,11 +286,11 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_ADC_SAMPLE_PERIOD_2S),     MP_ROM_INT(ADC_SAMPLE_PERIOD_2S) },
 };
 
-STATIC MP_DEFINE_CONST_DICT(machine_module_globals, machine_module_globals_table);
+STATIC MP_DEFINE_CONST_DICT(a9_module_globals, a9_module_globals_table);
 
-const mp_obj_module_t mp_module_machine = {
+const mp_obj_module_t mp_module_a9 = {
     .base = { &mp_type_module },
-    .globals = (mp_obj_dict_t*)&machine_module_globals,
+    .globals = (mp_obj_dict_t*)&a9_module_globals,
 };
 
-MP_REGISTER_MODULE(MP_QSTR_machine, mp_module_machine);
+MP_REGISTER_MODULE(MP_QSTR_a9, mp_module_a9);

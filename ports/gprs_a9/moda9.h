@@ -29,28 +29,14 @@
 #include "py/obj.h"
 #include "api_event.h"
 
-typedef struct _pyb_uart_obj_t {
-    mp_obj_base_t base;
-    uint8_t uart_id;
-    uint8_t bits;
-    uint8_t parity;
-    uint8_t stop;
-    uint32_t baudrate;
-    uint16_t timeout;       // timeout waiting for first char (in ms)
-    uint16_t timeout_char;  // timeout waiting between chars (in ms)
-} pyb_uart_obj_t;
-
-extern const mp_obj_type_t machine_pin_type;
-extern const mp_obj_type_t machine_adc_type;
-extern const mp_obj_type_t pyb_uart_type;
 extern const mp_obj_type_t pyb_rtc_type;
 extern Power_On_Cause_t powerOnCause;
 
 void modmachine_pin_init0(void);
 void modmachine_uart_init0(void);
-void modmachine_init0(void);
+void moda9_init0(void);
 
-void modmachine_notify_power_on(API_Event_t* event);
-void modmachine_notify_power_key_down(API_Event_t* event);
-void modmachine_notify_power_key_up(API_Event_t* event);
+void moda9_notify_power_on(API_Event_t* event);
+void moda9_notify_power_key_down(API_Event_t* event);
+void moda9_notify_power_key_up(API_Event_t* event);
 

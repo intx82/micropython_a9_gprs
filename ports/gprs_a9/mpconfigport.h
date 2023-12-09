@@ -42,7 +42,6 @@
 #define MICROPY_ENABLE_GC                   (1)
 #define MICROPY_LONGINT_IMPL                (MICROPY_LONGINT_IMPL_MPZ)
 #define MICROPY_FLOAT_IMPL                  (MICROPY_FLOAT_IMPL_DOUBLE)
-#define MICROPY_MODULE_FROZEN_MPY           (1)
 #define MICROPY_ENABLE_FINALISER            (MICROPY_ENABLE_GC)
 #define MICROPY_STACK_CHECK                 (1)
 #define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF (1)
@@ -58,7 +57,6 @@
 #define MICROPY_STREAMS_POSIX_API           (1)
 #define MICROPY_MODULE_BUILTIN_INIT         (1)
 #define MICROPY_MODULE_WEAK_LINKS           (1)
-#define MICROPY_MODULE_FROZEN_STR           (0)
 #define MICROPY_QSTR_EXTRA_POOL             mp_qstr_frozen_const_pool
 #define MICROPY_CAN_OVERRIDE_BUILTINS       (1)
 #define MICROPY_USE_INTERNAL_ERRNO          (1)
@@ -139,6 +137,10 @@
 #define MICROPY_PY_REVERSE_SPECIAL_METHODS  (1)
 #define MICROPY_PY_BUILTINS_BYTES_HEX       (1)
 #define MICROPY_EPOCH_IS_1970               (1)
+#define MICROPY_PY_TIME_INCLUDEFILE "ports/gprs_a9/modutime.c"
+#define MICROPY_PY_TIME (1)
+#define MICROPY_PY_TIME_TIME_TIME_NS (1)
+#define MICROPY_PY_TIME_GMTIME_LOCALTIME_MKTIME (1)
 
 // extended modules
 #define MICROPY_PY_UASYNCIO                 (1)
@@ -163,8 +165,8 @@
 #define MICROPY_PY_MACHINE_PIN_MAKE_NEW     mp_pin_make_new
 // #define MICROPY_PY_MACHINE_PULSE            (1)
 // #define MICROPY_PY_MACHINE_I2C              (1)
-#define MICROPY_PY_MACHINE_SPI              (1)
-#define MICROPY_PY_MACHINE_SOFTSPI          (1)
+#define MICROPY_PY_MACHINE_SPI              (0)
+#define MICROPY_PY_MACHINE_SOFTSPI          (0)
 // #define MICROPY_PY_MACHINE_SPI_MSB          (1)
 // #define MICROPY_PY_MACHINE_SPI_LSB          (1)
 // #define MICROPY_PY_MACHINE_SPI_MAKE_NEW     machine_hw_spi_make_new

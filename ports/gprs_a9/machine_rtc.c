@@ -26,9 +26,10 @@
  */
 #include "time.h"
 #include "errno.h"
+#include "moda9.h"
 
 #include "py/runtime.h"
-#include "modmachine.h"
+#include "extmod/modmachine.h"
 
 typedef struct _pyb_rtc_obj_t {
     mp_obj_base_t base;

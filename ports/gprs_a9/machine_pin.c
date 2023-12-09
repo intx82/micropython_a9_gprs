@@ -33,8 +33,8 @@
 #include "py/runtime.h"
 #include "py/mphal.h"
 #include "mphalport.h"
-#include "modmachine.h"
 #include "extmod/virtpin.h"
+#include "extmod/modmachine.h"
 
 #include "api_hal_pm.h"
 #include "api_hal_gpio.h"

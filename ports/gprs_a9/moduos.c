@@ -29,7 +29,7 @@
  */
 
 #include "moduos.h"
-#include "modmachine.h"
+
 #include "ram_pointers.h"
 
 #include <string.h>
@@ -38,10 +38,14 @@
 #include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
+
+#include "extmod/modmachine.h"
 #include "extmod/misc.h"
 #include "extmod/vfs.h"
 #include "extmod/vfs_fat.h"
 #include "genhdr/mpversion.h"
+#include "machine_uart.h"
+#include "mphalport.h"
 
 #include "rng.h"
 #include "api_fs.h"
@@ -421,7 +425,7 @@ mp_obj_t os_dupterm(size_t n_args, const mp_obj_t *args) {
     // Wraps dupterm to track attachment of
     // built-in UART.
     // ========================================
-    mp_obj_t prev_obj = mp_uos_dupterm_obj.fun.var(n_args, args);
+    mp_obj_t prev_obj = mp_os_dupterm_obj.fun.var(n_args, args);
     if (mp_obj_get_type(args[0]) == &pyb_uart_type) {
         pyb_uart_obj_t *uart = MP_OBJ_TO_PTR(args[0]);
         ++uart_attached_to_dupterm[uart->uart_id];
