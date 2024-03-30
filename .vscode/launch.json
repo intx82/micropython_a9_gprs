@@ -1,0 +1,28 @@
+{
+    // Используйте IntelliSense, чтобы узнать о возможных атрибутах.
+    // Наведите указатель мыши, чтобы просмотреть описания существующих атрибутов.
+    // Для получения дополнительной информации посетите: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "tools/mpy_ld.py",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/mpy_ld.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--qstrs",
+                "/home/intl/wrk/dlab/ant-rotate/src/net/gsm0710/build/gsm0710.config.h",
+                "--output",
+                "/home/intl/wrk/dlab/ant-rotate/src/net/gsm0710/build/gsm0710.native.mpy",
+                "--arch",
+                "riscv32-esp",
+                "--verbose",
+                "/home/intl/wrk/dlab/ant-rotate/src/net/gsm0710/build/mpy.o",
+                "/home/intl/wrk/dlab/ant-rotate/src/net/gsm0710/build/gsm0710.o",
+                "/home/intl/wrk/dlab/ant-rotate/src/net/gsm0710/build/buffer.o"
+            ],
+            "justMyCode": true
+        }
+    ]
+}
