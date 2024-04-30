@@ -5,7 +5,7 @@
 
 #define MICROPY_HW_ENABLE_SDCARD            (0)
 #define MICROPY_PY_MACHINE_I2S              (0)
-#define MICROPY_TASK_STACK_SIZE             (24 * 1024)
+#define MICROPY_TASK_STACK_SIZE             (20 * 1024)
 #define MICROPY_GC_INITIAL_HEAP_SIZE        (56 * 1024)
 
 #define MICROPY_PY_SYS_EXC_INFO             (0)
