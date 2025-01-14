@@ -28,10 +28,10 @@ QSTR_DEFS = qstrdefsport.h
 #############################################
 
 # MicroPython feature configurations
-MICROPY_PY_USSL = 1
-# MICROPY_SSL_MBEDTLS = 1
-MICROPY_SSL_AXTLS = 1
-AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
+#MICROPY_PY_USSL = 1
+#MICROPY_SSL_MBEDTLS = 1
+# MICROPY_SSL_AXTLS = 1
+#AXTLS_DEFS_EXTRA = -Dabort=abort_ -include time.h -DRT_MAX_PLAIN_LENGTH=1024 -DRT_EXTRA=4096
 
 FROZEN_MANIFEST ?= boards/manifest.py
 
