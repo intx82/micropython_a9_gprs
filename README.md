@@ -1,13 +1,13 @@
-[![CI badge](https://github.com/micropython/micropython/workflows/unix%20port/badge.svg)](https://github.com/micropython/micropython/actions?query=branch%3Amaster+event%3Apush) [![codecov](https://codecov.io/gh/micropython/micropython/branch/master/graph/badge.svg?token=I92PfD05sD)](https://codecov.io/gh/micropython/micropython)
+
+
 Important
 ---------
 
 This repo is only for porting micropython to the GPS+GSM modules A9 and A9G.
-[Go to the port page](https://github.com/pulkin/micropython/tree/master/ports/gprs_a9) or [visit the MicroPython project page.](https://micropython.org/)
+[Go to the port page](https://github.com/intx82/micropython_a9_gprs/tree/master/ports/gprs_a9) or [visit the MicroPython project page.](https://micropython.org/)
 
-The build status displays that of the original repo.
+## Please read following port readme first - https://github.com/intx82/micropython_a9_gprs/blob/master/ports/gprs_a9/README.md
 
-[![Build Status](https://travis-ci.org/micropython/micropython.png?branch=master)](https://travis-ci.org/micropython/micropython) [![Coverage Status](https://coveralls.io/repos/micropython/micropython/badge.png?branch=master)](https://coveralls.io/r/micropython/micropython?branch=master)
 
 The MicroPython project
 =======================
