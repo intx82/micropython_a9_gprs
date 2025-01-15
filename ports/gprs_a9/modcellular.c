@@ -686,7 +686,7 @@ STATIC mp_obj_t modcellular_sms_from_record(SMS_Message_Info_t* record) {
     // Returns:
     //     A new SMS object.
     // ========================================
-    sms_obj_t *self = m_new_obj_with_finaliser(sms_obj_t);
+    sms_obj_t *self = m_new_obj_maybe(sms_obj_t);
     self->base.type = &modcellular_sms_type;
     self->index = record->index;
     self->purpose = (uint8_t)record->status;
@@ -720,7 +720,7 @@ STATIC mp_obj_t modcellular_sms_from_raw(uint8_t* header, uint32_t header_length
         return mp_const_none;
     }
 
-    sms_obj_t *self = m_new_obj_with_finaliser(sms_obj_t);
+    sms_obj_t *self = m_new_obj_maybe(sms_obj_t);
     self->base.type = &modcellular_sms_type;
     self->index = 0;
     self->purpose = 0;

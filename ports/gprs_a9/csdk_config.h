@@ -38,5 +38,7 @@
 // // #define exp(x)  CSDK_FUNC(exp)(x)
 // inline double exp(double x){return CSDK_FUNC(exp)(x);}
 
+#define STATIC static
+
 #endif
 

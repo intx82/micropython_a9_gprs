@@ -28,7 +28,7 @@
  * THE SOFTWARE.
  */
 
-#include "moduos.h"
+#include "modos.h"
 #include "modmachine.h"
 #include "ram_pointers.h"
 
@@ -107,7 +107,7 @@ void ensure_exists(const char* path) {
         mp_raise_OSError(MP_ENOENT);
 }
 
-void moduos_init0() {
+void modos_init0() {
     API_FS_ChangeDir("/");
 }
 
@@ -173,7 +173,7 @@ typedef struct _native_vfs_ilistdir_it_t {
     Dir_t* folder;
 } native_vfs_ilistdir_it_t;
 
-mp_obj_t moduos_internal_flash_mount(mp_obj_t arg1, mp_obj_t arg2) {
+mp_obj_t modos_internal_flash_mount(mp_obj_t arg1, mp_obj_t arg2) {
     // ========================================
     // Mounts the filesystem.
     // ========================================
@@ -182,18 +182,18 @@ mp_obj_t moduos_internal_flash_mount(mp_obj_t arg1, mp_obj_t arg2) {
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_2(moduos_internal_flash_mount_obj, moduos_internal_flash_mount);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_mount_static_class_obj, &moduos_internal_flash_mount_obj);
+MP_DEFINE_CONST_FUN_OBJ_2(modos_internal_flash_mount_obj, modos_internal_flash_mount);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_mount_static_class_obj, &modos_internal_flash_mount_obj);
 
-mp_obj_t moduos_internal_flash_umount() {
+mp_obj_t modos_internal_flash_umount() {
     // ========================================
     // Unmounts the filesystem.
     // ========================================
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_0(moduos_internal_flash_umount_obj, moduos_internal_flash_umount);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_umount_static_class_obj, &moduos_internal_flash_umount_obj);
+MP_DEFINE_CONST_FUN_OBJ_0(modos_internal_flash_umount_obj, modos_internal_flash_umount);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_umount_static_class_obj, &modos_internal_flash_umount_obj);
 
 STATIC mp_obj_t internal_flash_ilistdir_it_iternext(mp_obj_t self_in) {
     // ========================================
@@ -221,7 +221,7 @@ STATIC mp_obj_t internal_flash_ilistdir_it_iternext(mp_obj_t self_in) {
     return MP_OBJ_STOP_ITERATION;
 }
 
-mp_obj_t moduos_internal_flash_ilistdir(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_ilistdir(mp_obj_t path_in) {
     // ========================================
     // Iterates a folder.
     // Args:
@@ -239,10 +239,10 @@ mp_obj_t moduos_internal_flash_ilistdir(mp_obj_t path_in) {
     return MP_OBJ_FROM_PTR(iter);
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_ilistdir_obj, moduos_internal_flash_ilistdir);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_ilistdir_static_class_obj, &moduos_internal_flash_ilistdir_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_ilistdir_obj, modos_internal_flash_ilistdir);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_ilistdir_static_class_obj, &modos_internal_flash_ilistdir_obj);
 
-mp_obj_t moduos_internal_flash_mkdir(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_mkdir(mp_obj_t path_in) {
     // ========================================
     // Creates a folder.
     // Args:
@@ -254,10 +254,10 @@ mp_obj_t moduos_internal_flash_mkdir(mp_obj_t path_in) {
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_mkdir_obj, moduos_internal_flash_mkdir);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_mkdir_static_class_obj, &moduos_internal_flash_mkdir_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_mkdir_obj, modos_internal_flash_mkdir);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_mkdir_static_class_obj, &modos_internal_flash_mkdir_obj);
 
-mp_obj_t moduos_internal_flash_remove(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_remove(mp_obj_t path_in) {
     // ========================================
     // Removes a file.
     // Args:
@@ -269,10 +269,10 @@ mp_obj_t moduos_internal_flash_remove(mp_obj_t path_in) {
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_remove_obj, moduos_internal_flash_remove);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_remove_static_class_obj, &moduos_internal_flash_remove_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_remove_obj, modos_internal_flash_remove);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_remove_static_class_obj, &modos_internal_flash_remove_obj);
 
-mp_obj_t moduos_internal_flash_rename(mp_obj_t old_path_in, mp_obj_t new_path_in) {
+mp_obj_t modos_internal_flash_rename(mp_obj_t old_path_in, mp_obj_t new_path_in) {
     // ========================================
     // Renames a file.
     // Args:
@@ -286,10 +286,10 @@ mp_obj_t moduos_internal_flash_rename(mp_obj_t old_path_in, mp_obj_t new_path_in
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_2(moduos_internal_flash_rename_obj, moduos_internal_flash_rename);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_rename_static_class_obj, &moduos_internal_flash_rename_obj);
+MP_DEFINE_CONST_FUN_OBJ_2(modos_internal_flash_rename_obj, modos_internal_flash_rename);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_rename_static_class_obj, &modos_internal_flash_rename_obj);
 
-mp_obj_t moduos_internal_flash_rmdir(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_rmdir(mp_obj_t path_in) {
     // ========================================
     // Removes a folder.
     // Args:
@@ -301,10 +301,10 @@ mp_obj_t moduos_internal_flash_rmdir(mp_obj_t path_in) {
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_rmdir_obj, moduos_internal_flash_rmdir);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_rmdir_static_class_obj, &moduos_internal_flash_rmdir_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_rmdir_obj, modos_internal_flash_rmdir);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_rmdir_static_class_obj, &modos_internal_flash_rmdir_obj);
 
-mp_obj_t moduos_internal_flash_chdir(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_chdir(mp_obj_t path_in) {
     // ========================================
     // Changes a folder.
     // Args:
@@ -316,10 +316,10 @@ mp_obj_t moduos_internal_flash_chdir(mp_obj_t path_in) {
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_chdir_obj, moduos_internal_flash_chdir);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_chdir_static_class_obj, &moduos_internal_flash_chdir_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_chdir_obj, modos_internal_flash_chdir);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_chdir_static_class_obj, &modos_internal_flash_chdir_obj);
 
-mp_obj_t moduos_internal_flash_getcwd(void) {
+mp_obj_t modos_internal_flash_getcwd(void) {
     // ========================================
     // Retrieves current folder.
     // ========================================
@@ -328,10 +328,10 @@ mp_obj_t moduos_internal_flash_getcwd(void) {
     return mp_obj_new_str(dir, strlen(dir));
 }
 
-MP_DEFINE_CONST_FUN_OBJ_0(moduos_internal_flash_getcwd_obj, moduos_internal_flash_getcwd);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_getcwd_static_class_obj, &moduos_internal_flash_getcwd_obj);
+MP_DEFINE_CONST_FUN_OBJ_0(modos_internal_flash_getcwd_obj, modos_internal_flash_getcwd);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_getcwd_static_class_obj, &modos_internal_flash_getcwd_obj);
 
-mp_obj_t moduos_internal_flash_stat(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_stat(mp_obj_t path_in) {
     // ========================================
     // Stats the file system.
     // ========================================
@@ -369,10 +369,10 @@ mp_obj_t moduos_internal_flash_stat(mp_obj_t path_in) {
     return mp_obj_new_tuple(10, tuple);
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_stat_obj, moduos_internal_flash_stat);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_stat_static_class_obj, &moduos_internal_flash_stat_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_stat_obj, modos_internal_flash_stat);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_stat_static_class_obj, &modos_internal_flash_stat_obj);
 
-mp_obj_t moduos_internal_flash_statvfs(mp_obj_t path_in) {
+mp_obj_t modos_internal_flash_statvfs(mp_obj_t path_in) {
     // ========================================
     // Stats the file system.
     // ========================================
@@ -386,31 +386,31 @@ mp_obj_t moduos_internal_flash_statvfs(mp_obj_t path_in) {
     return mp_obj_new_tuple(2, tuple);
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(moduos_internal_flash_statvfs_obj, moduos_internal_flash_statvfs);
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_statvfs_static_class_obj, &moduos_internal_flash_statvfs_obj);
+MP_DEFINE_CONST_FUN_OBJ_1(modos_internal_flash_statvfs_obj, modos_internal_flash_statvfs);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_statvfs_static_class_obj, &modos_internal_flash_statvfs_obj);
 
-MP_DEFINE_CONST_STATICMETHOD_OBJ(moduos_internal_flash_open_static_class_obj, &internal_flash_open_obj);
+MP_DEFINE_CONST_STATICMETHOD_OBJ(modos_internal_flash_open_static_class_obj, &internal_flash_open_obj);
 
 STATIC const mp_rom_map_elem_t internal_flash_locals_dict_table[] = {
-    { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&moduos_internal_flash_open_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_mount), MP_ROM_PTR(&moduos_internal_flash_mount_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_umount), MP_ROM_PTR(&moduos_internal_flash_umount_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_ilistdir), MP_ROM_PTR(&moduos_internal_flash_ilistdir_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_mkdir), MP_ROM_PTR(&moduos_internal_flash_mkdir_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_remove), MP_ROM_PTR(&moduos_internal_flash_remove_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_rename), MP_ROM_PTR(&moduos_internal_flash_rename_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_rmdir), MP_ROM_PTR(&moduos_internal_flash_rmdir_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_chdir), MP_ROM_PTR(&moduos_internal_flash_chdir_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_getcwd), MP_ROM_PTR(&moduos_internal_flash_getcwd_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_stat), MP_ROM_PTR(&moduos_internal_flash_stat_static_class_obj) },
-    { MP_ROM_QSTR(MP_QSTR_statvfs), MP_ROM_PTR(&moduos_internal_flash_statvfs_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&modos_internal_flash_open_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_mount), MP_ROM_PTR(&modos_internal_flash_mount_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_umount), MP_ROM_PTR(&modos_internal_flash_umount_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_ilistdir), MP_ROM_PTR(&modos_internal_flash_ilistdir_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_mkdir), MP_ROM_PTR(&modos_internal_flash_mkdir_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_remove), MP_ROM_PTR(&modos_internal_flash_remove_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_rename), MP_ROM_PTR(&modos_internal_flash_rename_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_rmdir), MP_ROM_PTR(&modos_internal_flash_rmdir_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_chdir), MP_ROM_PTR(&modos_internal_flash_chdir_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_getcwd), MP_ROM_PTR(&modos_internal_flash_getcwd_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_stat), MP_ROM_PTR(&modos_internal_flash_stat_static_class_obj) },
+    { MP_ROM_QSTR(MP_QSTR_statvfs), MP_ROM_PTR(&modos_internal_flash_statvfs_static_class_obj) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(internal_flash_locals_dict, internal_flash_locals_dict_table);
 
 
 STATIC MP_DEFINE_CONST_OBJ_TYPE(
-    moduos_internal_flash_type,
+    modos_internal_flash_type,
     MP_QSTR_internal_flash,
     MP_TYPE_FLAG_NONE,
     locals_dict, &internal_flash_locals_dict
@@ -421,7 +421,7 @@ mp_obj_t os_dupterm(size_t n_args, const mp_obj_t *args) {
     // Wraps dupterm to track attachment of
     // built-in UART.
     // ========================================
-    mp_obj_t prev_obj = mp_uos_dupterm_obj.fun.var(n_args, args);
+    mp_obj_t prev_obj = mp_os_dupterm_obj.fun.var(n_args, args);
     if (mp_obj_get_type(args[0]) == &pyb_uart_type) {
         pyb_uart_obj_t *uart = MP_OBJ_TO_PTR(args[0]);
         ++uart_attached_to_dupterm[uart->uart_id];
@@ -438,7 +438,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(os_dupterm_obj, 1, 2, os_dupterm);
 STATIC const mp_rom_map_elem_t os_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_uos) },
 
-    { MP_OBJ_NEW_QSTR(MP_QSTR_internal_flash), (mp_obj_t)MP_ROM_PTR(&moduos_internal_flash_type) },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_internal_flash), (mp_obj_t)MP_ROM_PTR(&modos_internal_flash_type) },
 
     { MP_ROM_QSTR(MP_QSTR_uname), MP_ROM_PTR(&os_uname_obj) },
     { MP_ROM_QSTR(MP_QSTR_urandom), MP_ROM_PTR(&os_urandom_obj) },
@@ -460,9 +460,9 @@ STATIC const mp_rom_map_elem_t os_module_globals_table[] = {
 
 STATIC MP_DEFINE_CONST_DICT(os_module_globals, os_module_globals_table);
 
-const mp_obj_module_t uos_module = {
+const mp_obj_module_t os_module = {
     .base = { &mp_type_module },
     .globals = (mp_obj_dict_t*)&os_module_globals,
 };
 
-MP_REGISTER_MODULE(MP_QSTR_uos, uos_module);
+MP_REGISTER_MODULE(MP_QSTR_uos, os_module);

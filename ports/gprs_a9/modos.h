@@ -28,7 +28,7 @@
  */
 #include "py/runtime.h"
 
-void moduos_init0(void);
+void modos_init0(void);
 
 extern const mp_obj_type_t mp_type_internal_flash_fileio;
 extern const mp_obj_type_t mp_type_internal_flash_textio;

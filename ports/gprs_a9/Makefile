@@ -154,8 +154,7 @@ SRC_C += \
 	modmachine.c \
 	machine_pin.c \
 	mphalport.c \
-	moduos.c \
-	modutime.c \
+	modos.c \
 	rng.c \
 	fatfs_port.c \
 	modchip.c \

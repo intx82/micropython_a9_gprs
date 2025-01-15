@@ -27,7 +27,6 @@
  */
 
 #include "modmachine.h"
-#include "extmod/machine_spi.h"
 
 #include "mpconfigport.h"
 #include "stdint.h"
@@ -72,6 +71,12 @@ void modmachine_notify_power_key_up(API_Event_t* event) {
         mp_sched_schedule(power_key_callback, mp_obj_new_bool(0));
     }
 }
+
+
+STATIC void mp_machine_idle(void) {
+    
+}
+
 
 // -------
 // Methods
@@ -229,6 +234,8 @@ STATIC mp_obj_t modmachine_on_power_key(mp_obj_t callable) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(modmachine_on_power_key_obj, modmachine_on_power_key);
 
+extern const mp_obj_type_t mp_machine_soft_spi_type;
+
 STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_umachine) },
     { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&machine_pin_type) },
@@ -245,9 +252,9 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_on), (mp_obj_t)&modmachine_watchdog_on_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_off), (mp_obj_t)&modmachine_watchdog_off_obj },
     { MP_OBJ_NEW_QSTR(MP_QSTR_watchdog_reset), (mp_obj_t)&modmachine_watchdog_reset_obj },
-    #if MICROPY_PY_MACHINE_SPI && MICROPY_PY_MACHINE_SOFTSPI
+//    #if MICROPY_PY_MACHINE_SPI || MICROPY_PY_MACHINE_SOFTSPI
     { MP_ROM_QSTR(MP_QSTR_SPI), MP_ROM_PTR(&mp_machine_soft_spi_type) },
-    #endif
+//    #endif
 
     // Reset reasons
     { MP_ROM_QSTR(MP_QSTR_POWER_ON_CAUSE_KEY),       MP_ROM_INT(POWER_ON_CAUSE_KEY) },

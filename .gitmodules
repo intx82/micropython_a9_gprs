@@ -71,9 +71,9 @@
 [submodule "ports/gprs_a9/GPRS_C_SDK"]
 	path = ports/gprs_a9/GPRS_C_SDK
 	url = https://github.com/Ai-Thinker-Open/GPRS_C_SDK
-[submodule "lib/GPRS_C_SDK"]
-	path = lib/GPRS_C_SDK
-	url = https://github.com/pulkin/GPRS_C_SDK.git
 [submodule "lib/csdtk42-linux"]
     path = lib/csdtk42-linux
     url = https://github.com/pulkin/csdtk42-linux.git
+[submodule "lib/GPRS_C_SDK"]
+	path = lib/GPRS_C_SDK
+	url = git@github.com:intx82/GPRS_C_SDK.git

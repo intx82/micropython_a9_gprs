@@ -223,7 +223,7 @@ extern const mp_obj_type_t mp_machine_soft_i2c_type;
 extern const mp_obj_dict_t mp_machine_i2c_locals_dict;
 #endif
 
-#if MICROPY_PY_MACHINE_SOFTSPI
+#if MICROPY_PY_MACHINE_SPI && MICROPY_PY_MACHINE_SOFTSPI
 extern const mp_obj_type_t mp_machine_soft_spi_type;
 extern const mp_machine_spi_p_t mp_machine_soft_spi_p;
 #endif

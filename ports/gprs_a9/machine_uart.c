@@ -36,7 +36,7 @@
 
 #include "mphalport.h"
 #include "modmachine.h"
-#include "moduos.h"
+#include "modos.h"
 
 STATIC const char *_parity_name[] = {"None", "1", "0"};
 

@@ -25,7 +25,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "moduos.h"
+#include "modos.h"
 #include "ram_pointers.h"
 
 #include <string.h>
@@ -186,7 +186,7 @@ STATIC mp_obj_t internal_flash_file_open(const char* file_name, const mp_obj_typ
                 mp_raise_ValueError("Mode must be one or more of 'rwabt+'");
         }
     }
-    internal_flash_file_obj_t *o = m_new_obj_with_finaliser(internal_flash_file_obj_t);
+    internal_flash_file_obj_t *o = m_new_obj_maybe(internal_flash_file_obj_t);
     o->base.type = type;
 
     int32_t fd = maybe_raise_FSError(API_FS_Open(file_name, mode, 0));

@@ -52,7 +52,7 @@
 #include "api_fs.h"
 #include "fatal.h"
 
-#include "moduos.h"
+#include "modos.h"
 #include "mphalport.h"
 #include "mpconfigport.h"
 #include "modcellular.h"
@@ -68,7 +68,7 @@
 #define MICROPYTHON_HEAP_MAX_SIZE (1024 * 2048)
 #define MICROPYTHON_HEAP_MIN_SIZE (2048)
 
-STATIC void* heap;
+static void* heap = NULL;
 
 HANDLE mainTaskHandle  = NULL;
 HANDLE microPyTaskHandle = NULL;
@@ -113,7 +113,7 @@ void __builtin_unreachable (void) {
 
 }
 
-STATIC void *stack_top;
+static void *stack_top = NULL;
 
 void gc_collect(void) {
     //ESP8266-style
@@ -178,7 +178,7 @@ soft_reset:
     gc_init(heap, heap + heap_size);
 #endif
     mp_init();
-    moduos_init0();
+    modos_init0();
     modcellular_init0();
     modgps_init0();
     modmachine_init0();
@@ -188,7 +188,7 @@ soft_reset:
     mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR__slash_));
     mp_obj_list_init(mp_sys_argv, 0);
     // Startup scripts
-    pyexec_frozen_module("_boot.py");
+    pyexec_frozen_module("_boot.py", false);
     pyexec_file_if_exists("boot.py");
     if (pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL) {
         pyexec_file_if_exists("main.py");

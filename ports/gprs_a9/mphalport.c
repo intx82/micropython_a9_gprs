@@ -47,7 +47,7 @@ int uart_attached_to_dupterm[UART_NPORTS];
 int mp_hal_stdin_rx_chr(void) {
     // This should be blocking
     for (;;) {
-        int c = mp_uos_dupterm_rx_chr();
+        int c = mp_os_dupterm_rx_chr();
         if (c != -1) {
             return c;
         }
@@ -58,11 +58,11 @@ int mp_hal_stdin_rx_chr(void) {
 }
 
 void mp_hal_stdout_tx_str(const char *str) {
-    mp_uos_dupterm_tx_strn(str, strlen(str));
+    mp_os_dupterm_tx_strn(str, strlen(str));
 }
 
 void mp_hal_stdout_tx_strn(const char *str, uint32_t len) {
-    mp_uos_dupterm_tx_strn(str, len);
+    mp_os_dupterm_tx_strn(str, len);
 }
 
 void mp_hal_stdout_tx_strn_cooked(const char *str, uint32_t len) {
@@ -70,9 +70,9 @@ void mp_hal_stdout_tx_strn_cooked(const char *str, uint32_t len) {
     while (len--) {
         if (*str == '\n') {
             if (str > last) {
-                mp_uos_dupterm_tx_strn(last, str - last);
+                mp_os_dupterm_tx_strn(last, str - last);
             }
-            mp_uos_dupterm_tx_strn("\r\n", 2);
+            mp_os_dupterm_tx_strn("\r\n", 2);
             ++str;
             last = str;
         } else {
@@ -80,7 +80,7 @@ void mp_hal_stdout_tx_strn_cooked(const char *str, uint32_t len) {
         }
     }
     if (str > last) {
-        mp_uos_dupterm_tx_strn(last, str - last);
+        mp_os_dupterm_tx_strn(last, str - last);
     }
 }
 
