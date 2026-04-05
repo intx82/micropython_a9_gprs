@@ -32,3 +32,4 @@ user.props
 # Created by ci.sh esp8266 targets
 /xtensa-lx106-elf-standalone.tar.gz
 /xtensa-lx106-elf/
+ports/esp32/.cache/**
