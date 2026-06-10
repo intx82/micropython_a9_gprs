@@ -40,6 +40,7 @@
 #include "py/mphal.h"
 #include "uart.h"
 #include "machine_timer.h"
+#include <stdbool.h>
 
 #if SOC_UART_SUPPORT_XTAL_CLK
 // Works independently of APB frequency, on ESP32C3, ESP32S3.
@@ -87,6 +88,7 @@ typedef struct _machine_uart_obj_t {
     uint16_t timeout;       // timeout waiting for first char (in ms)
     uint16_t timeout_char;  // timeout waiting between chars (in ms)
     uint32_t invert;        // lines to invert
+    bool rs485;
     TaskHandle_t uart_event_task;
     QueueHandle_t uart_queue;
     uint16_t mp_irq_trigger;   // user IRQ trigger mask
@@ -184,9 +186,9 @@ static void mp_machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_
     machine_uart_obj_t *self = MP_OBJ_TO_PTR(self_in);
     uint32_t baudrate;
     check_esp_err(uart_get_baudrate(self->uart_num, &baudrate));
-    mp_printf(print, "UART(%u, baudrate=%u, bits=%u, parity=%s, stop=%u, tx=%d, rx=%d, rts=%d, cts=%d, txbuf=%u, rxbuf=%u, timeout=%u, timeout_char=%u, irq=%d",
+    mp_printf(print, "UART(%u, baudrate=%u, bits=%u, parity=%s, stop=%u, tx=%d, rx=%d, rts=%d, cts=%d, txbuf=%u, rxbuf=%u, timeout=%u, timeout_char=%u, irq=%d rs485=%d",
         self->uart_num, baudrate, self->bits, _parity_name[self->parity],
-        self->stop, self->tx, self->rx, self->rts, self->cts, self->txbuf, self->rxbuf, self->timeout, self->timeout_char, self->mp_irq_trigger);
+        self->stop, self->tx, self->rx, self->rts, self->cts, self->txbuf, self->rxbuf, self->timeout, self->timeout_char, self->mp_irq_trigger, self->rs485);
     if (self->invert) {
         mp_printf(print, ", invert=");
         uint32_t invert_mask = self->invert;
@@ -233,7 +235,7 @@ static void mp_machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_
 }
 
 static void mp_machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
-    enum { ARG_baudrate, ARG_bits, ARG_parity, ARG_stop, ARG_tx, ARG_rx, ARG_rts, ARG_cts, ARG_txbuf, ARG_rxbuf, ARG_timeout, ARG_timeout_char, ARG_invert, ARG_flow };
+    enum { ARG_baudrate, ARG_bits, ARG_parity, ARG_stop, ARG_tx, ARG_rx, ARG_rts, ARG_cts, ARG_txbuf, ARG_rxbuf, ARG_timeout, ARG_timeout_char, ARG_invert, ARG_flow, ARG_rs485 };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_baudrate, MP_ARG_INT, {.u_int = 0} },
         { MP_QSTR_bits, MP_ARG_INT, {.u_int = 0} },
@@ -249,6 +251,7 @@ static void mp_machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args,
         { MP_QSTR_timeout_char, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1} },
         { MP_QSTR_invert, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1} },
         { MP_QSTR_flow, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1} },
+        { MP_QSTR_rs485, MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
     };
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
     mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
@@ -265,6 +268,7 @@ static void mp_machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args,
         self->timeout = 0;
         self->timeout_char = 0;
         self->invert = 0;
+        self->rs485 = false;
         self->flowcontrol = 0;
         self->uart_event_task = NULL;
         self->uart_queue = NULL;
@@ -458,6 +462,9 @@ static void mp_machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args,
     if (args[ARG_timeout_char].u_int != -1) {
         self->timeout_char = args[ARG_timeout_char].u_int;
     }
+
+    self->rs485 = args[ARG_rs485].u_bool;
+
     // make sure it is at least as long as a whole character (12 bits here)
     uint32_t char_time_ms = 12000 / baudrate + 1;
     uint32_t rx_timeout = self->timeout_char / char_time_ms;
@@ -467,6 +474,13 @@ static void mp_machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args,
     } else {
         check_esp_err(uart_set_rx_timeout(self->uart_num, rx_timeout));
     }
+
+    if (self->rs485) {
+        check_esp_err(uart_set_mode(self->uart_num, UART_MODE_RS485_HALF_DUPLEX));
+    } else {
+        check_esp_err(uart_set_mode(self->uart_num, UART_MODE_UART));
+    }
+
 
     // set line inversion
     if (args[ARG_invert].u_int != -1) {
