@@ -33,6 +33,7 @@
 #include "py/mphal.h"
 #include "mpthreadport.h"
 
+#include "esp_heap_caps.h"
 #include "esp_task.h"
 
 #if MICROPY_PY_THREAD
@@ -157,7 +158,11 @@ mp_uint_t mp_thread_create_ex(void *(*entry)(void *), void *arg, size_t *stack_s
     BaseType_t result = xTaskCreatePinnedToCore(freertos_entry, name, *stack_size / sizeof(StackType_t), arg, priority, &th->id, MP_TASK_COREID);
     if (result != pdPASS) {
         mp_thread_mutex_unlock(&thread_mutex);
-        mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("can't create thread"));
+        const uint32_t caps = MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT;
+        mp_raise_msg_varg(&mp_type_OSError,
+            MP_ERROR_TEXT("can't create thread (stack: %u bytes, internal heap: %u free, %u largest block)"),
+            (unsigned int)*stack_size, (unsigned int)heap_caps_get_free_size(caps),
+            (unsigned int)heap_caps_get_largest_free_block(caps));
     }
 
     // add thread to linked list of all threads
